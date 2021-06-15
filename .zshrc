@@ -5,7 +5,7 @@ cat ~/.banner
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/Mac/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -92,34 +92,28 @@ source $ZSH/oh-my-zsh.sh
 
 DEFAULT_USER=$USER
 
-export PATH=/Users/Mac/Library/Python/3.6/lib/python/site-packages:$PATH
+export PATH=$HOME/Library/Python/3.6/lib/python/site-packages:$PATH
 fpath=(~/.zsh/completion $fpath)
 
-export GO_PATH="/Users/Mac/go"
+export GO_PATH=$HOME/go
 export PATH=$GO_PATH/bin:$PATH
 export PATH="/usr/local/bin:$PATH"
 
-export PATH=/Users/Mac/Library/Android/sdk/platform-tools/:$PATH
-export PATH=/Users/Mac/Library/Android/sdk/tools/:$PATH
-export ANDROID_HOME=/Users/Mac/Library/Android/sdk
+export PATH=$HOME/Library/Android/sdk/platform-tools/:$PATH
+export PATH=$HOME/Library/Android/sdk/tools/:$PATH
+export ANDROID_HOME=$HOME/Library/Android/sdk
 
-export ORACLE_HOME=/Users/Mac/oracle/instantclient_12_2
+export ORACLE_HOME=$HOME/oracle/instantclient_12_2
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME
 
 alias dsclean="find . -name '.DS_Store' -type f -delete"
 alias digit="/Applications/Wine\ Stable.app/Contents/Resources/wine/bin/wine Digit.exe"
 
+setopt no_aliases
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-if [ -s "$HOME/.nvm/nvm.sh" ]; then
-  export NVM_DIR="$HOME/.nvm"
-  nvm_cmds=(nvm node npm yarn)
-  for cmd in $nvm_cmds ; do
-    alias $cmd="unalias $nvm_cmds && unset nvm_cmds && . $NVM_DIR/nvm.sh && $cmd"
-  done
-fi
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+setopt aliases
 
 eval "$(pyenv init -)"
 
