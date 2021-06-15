@@ -1,3 +1,15 @@
+let g:startify_custom_header = [
+      \ '                            __        ',
+      \ '                           _| |_      ',
+      \ '                           (_"\      ',
+      \ '                             | |      ',
+      \ '                             | |      ',
+      \ '                  __.----.__/  /      ',
+      \ '    /‾‾\        /             /       ',
+      \ '    V‾\ \____ / (   |   (  |/         ',
+      \ '       \________,|_|"‾‾‾"|_|          ',
+      \ '‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾']
+
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
 
