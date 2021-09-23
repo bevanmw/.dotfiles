@@ -47,7 +47,7 @@ end
 local on_attach = function(client, bufnr)
     local buf_map = vim.api.nvim_buf_set_keymap
     vim.cmd("command! LspDef lua vim.lsp.buf.definition()")
-    vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting_sync()")
+    vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting_sync(nil, 8000)")
     vim.cmd("command! LspCodeAction lua vim.lsp.buf.code_action()")
     vim.cmd("command! LspHover lua vim.lsp.buf.hover()")
     vim.cmd("command! LspRename lua vim.lsp.buf.rename()")
@@ -166,7 +166,9 @@ local formatFiletypes = {
     typescript = "prettier",
     typescriptreact = "prettier",
     javascript = "prettier",
-    json = "prettier"
+    json = "prettier",
+    html = "prettier",
+    css = "prettier",
 }
 
 nvim_lsp.diagnosticls.setup {

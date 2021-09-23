@@ -122,3 +122,7 @@ export LS_COLORS="$(vivid generate molokai)"
 alias ls="gls --color"
 
 export BROWSER="firefox"
+# export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib
+# export PKG_CONFIG=/usr/local/lib/pkgconfig:/usr/local/lib
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+export PKG_CONFIG=/usr/local/lib/pkgconfig

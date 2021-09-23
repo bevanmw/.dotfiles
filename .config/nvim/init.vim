@@ -100,6 +100,8 @@ call plug#begin()
   Plug 'nvim-lua/plenary.nvim'            " Additional lua functions - used by other plugins
   Plug 'nvim-telescope/telescope.nvim'    " Search popup
 
+  Plug 'windwp/nvim-spectre'              " Find + replace
+
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " Syntax Highlighting 
 
   Plug 'lukas-reineke/indent-blankline.nvim', { 'branch': 'lua' }
@@ -129,6 +131,8 @@ call plug#begin()
   Plug 'norcalli/nvim-colorizer.lua'      " Highlight colors in code
 
   Plug 'cedarbaum/fugitive-azure-devops.vim'
+
+  Plug 'ruanyl/vim-sort-imports'          " Sort imports
 
 call plug#end()
 
@@ -162,9 +166,16 @@ nnoremap <leader>pi :Dispatch cd ios; pod install; cd ../<CR>
 " Quickly open the embedded Nvim terminal emulator
 nnoremap <silent> <Leader>t :bel 10sp +terminal<CR>
 
+" Spectre
+nnoremap <leader>S :lua require('spectre').open()<CR>
+
 " Bufferline
 nnoremap <silent>]b :BufferLineCycleNext<CR>
 nnoremap <silent>[b :BufferLineCyclePrev<CR>
+
+" Move selected up or down
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
 
 " Enter terminal mode automatically
 augroup term_open
