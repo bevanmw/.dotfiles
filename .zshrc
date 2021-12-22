@@ -115,7 +115,7 @@ export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 setopt aliases
 
-eval "$(pyenv init -)"
+# eval "$(pyenv init -)"
 
 export LS_COLORS="$(vivid generate molokai)"
 

@@ -28,6 +28,8 @@ set incsearch
 set scrolloff=10
 " Disable line wrapping
 set nowrap
+" Allow hiding of buffers
+set hidden
 
 set redrawtime=100000
 
@@ -65,6 +67,8 @@ autocmd StdinReadPre * let s:std_in=1
 
 let g:presence_editing_text      = "Editing file"
 let g:presence_workspace_text    = "Working on nvim"
+
+autocmd BufEnter *.png,*.jpg,*gif exec "! imgcat ".expand("%") | :bw
 "
 " Disable quote concealing in JSON files
 let g:vim_json_conceal=0
@@ -134,6 +138,8 @@ call plug#begin()
 
   Plug 'ruanyl/vim-sort-imports'          " Sort imports
 
+  Plug 'glepnir/lspsaga.nvim'             " Better LSP UI
+
 call plug#end()
 
 colorscheme OceanicNext
@@ -162,6 +168,10 @@ nnoremap <leader>ys :Dispatch! yarn start<CR>
 nnoremap <leader>yt :Dispatch yarn test<CR><C-w>j
 nnoremap <leader>ni :Dispatch npm install<CR>
 nnoremap <leader>pi :Dispatch cd ios; pod install; cd ../<CR>
+
+" Buffers
+nnoremap <leader>vb :vertical sb<space>
+nnoremap <leader>sb :sb<space>
 
 " Quickly open the embedded Nvim terminal emulator
 nnoremap <silent> <Leader>t :bel 10sp +terminal<CR>

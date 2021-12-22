@@ -1,5 +1,14 @@
 local nvim_lsp = require("lspconfig")
 local protocol = require('vim.lsp.protocol')
+local saga = require('lspsaga')
+
+saga.init_lsp_saga {
+  error_sign = '',
+  warn_sign = '',
+  hint_sign = '',
+  infor_sign = '',
+  border_style = "round",
+}
 
 vim.api.nvim_command('hi LspDiagnosticsVirtualTextError guifg=Red ctermfg=Red')
 vim.api.nvim_command('hi LspDiagnosticsVirtualTextWarning guifg=Yellow ctermfg=Yellow')
@@ -65,7 +74,10 @@ local on_attach = function(client, bufnr)
     buf_map(bufnr, "n", "gr", ":LspRename<CR>", {silent = true})
     buf_map(bufnr, "n", "gR", ":LspRefs<CR>", {silent = true})
     buf_map(bufnr, "n", "gy", ":LspTypeDef<CR>", {silent = true})
-    buf_map(bufnr, "n", "K", ":LspHover<CR>", {silent = true})
+    buf_map(bufnr, "n", "K", ":Lspsaga hover_doc<CR>", {silent = true})
+    buf_map(bufnr, "i", "<C-k>", "<Cmd>Lspsaga signature_help<CR>", {silent = true})
+    buf_map(bufnr, "n", "<C-j>", ":Lspsaga show_line_diagnostics<CR>", {silent = true})
+    buf_map(bufnr, "n", "gh", ":Lspsaga lsp_finder<CR>", {silent = true})
     buf_map(bufnr, "n", "gs", ":LspOrganize<CR>", {silent = true})
     buf_map(bufnr, "n", "[d", ":LspDiagPrev<CR>", {silent = true})
     buf_map(bufnr, "n", "]d", ":LspDiagNext<CR>", {silent = true})
