@@ -98,7 +98,7 @@ call plug#begin()
 
   Plug 'akinsho/nvim-bufferline.lua' " Buffer header
 
-  Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
+  Plug 'NTBBloodbath/galaxyline.nvim' , {'branch': 'main'}
 
   Plug 'nvim-lua/popup.nvim'              " Popup windows - used by other plugins
   Plug 'nvim-lua/plenary.nvim'            " Additional lua functions - used by other plugins
@@ -207,14 +207,9 @@ let g:airline_powerline_fonts = 1
 
 " Nvim Tree
 let g:nvim_tree_width = 50
-let g:nvim_tree_follow = 1
 let g:nvim_tree_quit_on_open = 1
 let g:nvim_tree_indent_markers = 1
-let g:nvim_tree_lsp_diagnostics = 1
-let g:nvim_tree_disable_netrw = 0
-let g:nvim_tree_hijack_netrw = 1
 let g:nvim_tree_group_empty = 1
-let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache', '.temp', '.DS_Store']
 
 " Make work like vinegar
 nnoremap - :NvimTreeToggle<CR>
@@ -232,9 +227,23 @@ require("bufferline").setup{
   },
 }
 require'colorizer'.setup()
+require'nvim-tree'.setup {
+  disable_netrw = 0,
+  hijack_netrw = 1,
+  follow = 1,
+  diagnostics = {
+  enable = true
+  },
+  update_focused_file = {
+    enable = true
+  },
+  filters = {
+    custom = {'.git', 'node_modules', '.cache', '.temp', '.DS_Store'}
+  }
+}
 EOF
 
-luafile ~/.config/nvim/spaceline.lua
+luafile ~/.config/nvim/lua/eviline.lua
 
 luafile ~/.config/nvim/telescope.lua
 

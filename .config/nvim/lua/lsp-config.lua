@@ -233,3 +233,5 @@ vim.api.nvim_set_keymap("i", "<CR>", [[compe#confirm("<CR>")]],
                         {expr = true, silent = true})
 vim.api.nvim_set_keymap("i", "<C-e>", [[compe#close("<C-e>")]],
                         {expr = true, silent = true})
+
+vim.lsp.set_log_level("debug")
