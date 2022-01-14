@@ -95,6 +95,7 @@ call plug#begin()
   Plug 'tpope/vim-fugitive'               " Git stuff
   Plug 'tpope/vim-rhubarb'                " Enable :GBrowse for github
   Plug 'tommcdo/vim-fubitive'             " Enable :GBrowse for bitbucket
+  Plug 'cedarbaum/fugitive-azure-devops.vim'  " Enable :GBrowse for devops
 
   Plug 'akinsho/nvim-bufferline.lua' " Buffer header
 
@@ -108,7 +109,7 @@ call plug#begin()
 
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " Syntax Highlighting 
 
-  Plug 'lukas-reineke/indent-blankline.nvim', { 'branch': 'lua' }
+  Plug 'lukas-reineke/indent-blankline.nvim', { 'branch': 'master' }
 
   Plug 'tpope/vim-commentary'             " Comments
 
@@ -149,7 +150,7 @@ let mapleader = " "
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 let g:fubitive_domain_pattern = 'bitbucket\.org'
-let g:fugitive_azure_domain_pattern = 'vs-ssh.visualstudio.com'
+let g:fugitive_azure_devops_baseurl = 'dev.azure.com'
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -240,6 +241,12 @@ require'nvim-tree'.setup {
   filters = {
     custom = {'.git', 'node_modules', '.cache', '.temp', '.DS_Store'}
   }
+}
+require("indent_blankline").setup {
+    space_char_blankline = " ",
+    show_current_context = true,
+    show_current_context_start = true,
+    use_treesitter = true
 }
 EOF
 

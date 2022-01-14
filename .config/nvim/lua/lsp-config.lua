@@ -134,7 +134,19 @@ nvim_lsp.tsserver.setup {
 nvim_lsp.pyright.setup {
     on_attach = function(client)
         on_attach(client)
-    end
+    end,
+    settings = {
+      python = {
+        analysis = {
+          autoSearchPaths = true,
+          diagnosticMode = "workspace",
+          useLibraryCodeForTypes = true
+        },
+        venvPath = './',
+        venv = 'env'
+      },
+    },
+    single_file_support = true
 }
 
 local filetypes = {
@@ -171,7 +183,8 @@ local formatters = {
     eslint_d = {
       command = "eslint_d",
       args = { "--stdin", "--fix-to-stdout", "--stdin-filename", "%filepath" },
-    }
+    },
+    black = { command = 'black --quiet -' }
 }
 
 local formatFiletypes = {
@@ -181,6 +194,7 @@ local formatFiletypes = {
     json = "prettier",
     html = "prettier",
     css = "prettier",
+    python = "black"
 }
 
 nvim_lsp.diagnosticls.setup {
