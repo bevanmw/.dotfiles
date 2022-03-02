@@ -1,3 +1,18 @@
+--
+-- === Galaxyline ===
+--
+-- Bottom status line
+--
+
+vim.cmd("Plug 'NTBBloodbath/galaxyline.nvim' , {'branch': 'main'}")
+
+vim.api.nvim_exec([[
+  autocmd User PlugLoaded lua require("plugins.galaxyline-nvim").setup()
+]], false)
+
+local module = {}
+
+function module.setup()
 local gl = require("galaxyline")
 local colors = require("galaxyline.themes.colors")["doom-one"]
 local condition = require("galaxyline.condition")
@@ -7,7 +22,7 @@ gl.short_line_list = { "NvimTree", "vista", "dbui", "packer" }
 gls.left[1] = {
   RainbowRed = {
     provider = function()
-      return "? "
+      return "▊ "
     end,
     highlight = { colors.blue, colors.bg },
   },
@@ -20,13 +35,13 @@ gls.left[2] = {
         n = colors.red,
         i = colors.green,
         v = colors.blue,
-        [""] = colors.blue,
+        [""] = colors.blue,
         V = colors.blue,
         c = colors.magenta,
         no = colors.red,
         s = colors.orange,
         S = colors.orange,
-        [""] = colors.orange,
+        [""] = colors.orange,
         ic = colors.yellow,
         R = colors.violet,
         Rv = colors.violet,
@@ -35,11 +50,11 @@ gls.left[2] = {
         r = colors.cyan,
         rm = colors.cyan,
         ["r?"] = colors.cyan,
-        ["!"] = colors.red,
+        ["!"]= colors.red,
         t = colors.red,
       }
       vim.api.nvim_command("hi GalaxyViMode guifg=" .. mode_color[vim.fn.mode()])
-      return "?  "
+      return "  "
     end,
     highlight = { colors.red, colors.bg, "bold" },
   },
@@ -57,7 +72,7 @@ gls.left[4] = {
     condition = condition.buffer_not_empty,
     highlight = { require("galaxyline.providers.fileinfo").get_file_icon_color, colors.bg },
   },
-}
+} 
 
 gls.left[5] = {
   FileName = {
@@ -88,17 +103,18 @@ gls.left[7] = {
   },
 }
 
+
 gls.left[8] = {
   DiagnosticError = {
     provider = "DiagnosticError",
-    icon = " ? ",
+    icon = "  ",
     highlight = { colors.red, colors.bg },
   },
 }
 gls.left[9] = {
   DiagnosticWarn = {
     provider = "DiagnosticWarn",
-    icon = " ? ",
+    icon = "  ",
     highlight = { colors.yellow, colors.bg },
   },
 }
@@ -106,7 +122,7 @@ gls.left[9] = {
 gls.left[10] = {
   DiagnosticHint = {
     provider = "DiagnosticHint",
-    icon = " ? ",
+    icon = "  ",
     highlight = { colors.cyan, colors.bg },
   },
 }
@@ -114,11 +130,10 @@ gls.left[10] = {
 gls.left[11] = {
   DiagnosticInfo = {
     provider = "DiagnosticInfo",
-    icon = " ? ",
+    icon = "  ",
     highlight = { colors.blue, colors.bg },
   },
 }
-
 -- gls.mid[1] = {
 --   ShowLspClient = {
 --     provider = "GetLspClient",
@@ -157,7 +172,7 @@ gls.right[2] = {
 gls.right[3] = {
   GitIcon = {
     provider = function()
-      return " ? "
+      return "  "
     end,
     condition = condition.check_git_workspace,
     separator = " ",
@@ -178,7 +193,7 @@ gls.right[5] = {
   DiffAdd = {
     provider = "DiffAdd",
     condition = condition.hide_in_width,
-    icon = " ? ",
+    icon = "  ",
     highlight = { colors.green, colors.bg },
   },
 }
@@ -186,7 +201,7 @@ gls.right[6] = {
   DiffModified = {
     provider = "DiffModified",
     condition = condition.hide_in_width,
-    icon = " ?",
+    icon = " 柳",
     highlight = { colors.orange, colors.bg },
   },
 }
@@ -194,7 +209,7 @@ gls.right[7] = {
   DiffRemove = {
     provider = "DiffRemove",
     condition = condition.hide_in_width,
-    icon = " ? ",
+    icon = "  ",
     highlight = { colors.red, colors.bg },
   },
 }
@@ -202,7 +217,7 @@ gls.right[7] = {
 gls.right[8] = {
   RainbowBlue = {
     provider = function()
-      return " ?"
+      return " ▊"
     end,
     highlight = { colors.blue, colors.bg },
   },
@@ -231,3 +246,6 @@ gls.short_line_right[1] = {
     highlight = { colors.fg, colors.bg },
   },
 }
+end
+
+return module

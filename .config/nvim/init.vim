@@ -31,6 +31,13 @@ set nowrap
 " Allow hiding of buffers
 set hidden
 
+" Show max line lenght indicator
+set colorcolumn=88 " Black python uses this
+
+set nocompatible
+filetype plugin on
+syntax on
+
 set redrawtime=100000
 
 set encoding=UTF-8
@@ -47,6 +54,7 @@ set lazyredraw
 
 set copyindent
 set preserveindent
+set list listchars=tab:▸\ ,trail:·,precedes:←,extends:→
 
 setlocal spell spelllang=en_us
 
@@ -55,6 +63,7 @@ set clipboard=unnamed
 set splitbelow
 set splitright
 
+let mapleader = " "
 
 set shell=/bin/zsh
 
@@ -67,6 +76,8 @@ autocmd StdinReadPre * let s:std_in=1
 
 let g:presence_editing_text      = "Editing file"
 let g:presence_workspace_text    = "Working on nvim"
+
+autocmd FileType markdown setlocal spell
 
 autocmd BufEnter *.png,*.jpg,*gif exec "! imgcat ".expand("%") | :bw
 "
@@ -85,100 +96,21 @@ autocmd VimEnter *
 "    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 " endif
 
-call plug#begin()
-  Plug 'jeffkreeftmeijer/vim-numbertoggle'
+lua require("plugins.init")
 
-  Plug 'mhinz/vim-startify'               " Start screen
+colorscheme nightfox
 
-  Plug 'jparise/vim-graphql'              " GraphQL syntax
-
-  Plug 'tpope/vim-fugitive'               " Git stuff
-  Plug 'tpope/vim-rhubarb'                " Enable :GBrowse for github
-  Plug 'tommcdo/vim-fubitive'             " Enable :GBrowse for bitbucket
-  Plug 'cedarbaum/fugitive-azure-devops.vim'  " Enable :GBrowse for devops
-
-  Plug 'akinsho/nvim-bufferline.lua' " Buffer header
-
-  Plug 'NTBBloodbath/galaxyline.nvim' , {'branch': 'main'}
-
-  Plug 'nvim-lua/popup.nvim'              " Popup windows - used by other plugins
-  Plug 'nvim-lua/plenary.nvim'            " Additional lua functions - used by other plugins
-  Plug 'nvim-telescope/telescope.nvim'    " Search popup
-
-  Plug 'windwp/nvim-spectre'              " Find + replace
-
-  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " Syntax Highlighting 
-
-  Plug 'lukas-reineke/indent-blankline.nvim', { 'branch': 'master' }
-
-  Plug 'tpope/vim-commentary'             " Comments
-
-  Plug 'tpope/vim-surround'               " Surround selected text with something
-
-  Plug 'tpope/vim-dispatch'               " Run tasks async
-
-  Plug 'kyazdani42/nvim-tree.lua'         " Tree view
-
-  Plug 'airblade/vim-rooter'              " Find and auto select the root of project
-
-  Plug 'kyazdani42/nvim-web-devicons'     " Icons
-
-  Plug 'unblevable/quick-scope'           " Highlight chars when using f or t
-
-  Plug 'neovim/nvim-lspconfig'            " Nvim LSP config
-
-  Plug 'hrsh7th/nvim-compe'               " Nvim LSP auto completion
-
-  Plug 'hrsh7th/vim-vsnip'                " Snippets
-
-  Plug 'mhartington/oceanic-next'         " Color scheme
-
-  Plug 'norcalli/nvim-colorizer.lua'      " Highlight colors in code
-
-  Plug 'cedarbaum/fugitive-azure-devops.vim'
-
-  Plug 'ruanyl/vim-sort-imports'          " Sort imports
-
-  Plug 'glepnir/lspsaga.nvim'             " Better LSP UI
-
-call plug#end()
-
-colorscheme OceanicNext
-
-let mapleader = " "
 
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-
-let g:fubitive_domain_pattern = 'bitbucket\.org'
-let g:fugitive_azure_devops_baseurl = 'dev.azure.com'
-
-" Find files using Telescope command-line sugar.
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fs <cmd>Telescope lsp_dynamic_workspace_symbols<cr>
-nnoremap <leader>fd <cmd>Telescope lsp_definitions<cr>
-nnoremap <leader>fe <cmd>Telescope lsp_workspace_diagnostics<cr>
-nnoremap <leader>fgl <cmd>Telescope git_files<cr>
-nnoremap <leader>fgb <cmd>Telescope git_branches<cr>
-
-" NPM / Yarn maps for vim-dispatch:
-nnoremap <leader>yi :Dispatch yarn install<CR>
-nnoremap <leader>ys :Dispatch! yarn start<CR>
-nnoremap <leader>yt :Dispatch yarn test<CR><C-w>j
-nnoremap <leader>ni :Dispatch npm install<CR>
-nnoremap <leader>pi :Dispatch cd ios; pod install; cd ../<CR>
 
 " Buffers
 nnoremap <leader>vb :vertical sb<space>
 nnoremap <leader>sb :sb<space>
+" Close all buffers
+nnoremap <leader>Q :bufdo bwipeout<CR>
 
 " Quickly open the embedded Nvim terminal emulator
 nnoremap <silent> <Leader>t :bel 10sp +terminal<CR>
-
-" Spectre
-nnoremap <leader>S :lua require('spectre').open()<CR>
 
 " Bufferline
 nnoremap <silent>]b :BufferLineCycleNext<CR>
@@ -198,59 +130,50 @@ augroup END
 tnoremap <Esc> <C-\><C-n>
 
 " Map jk to exit insert mode:
-:imap jk <Esc>
+" :imap jk <Esc>
 
-let g:chadtree_settings = { "view.window_options.relativenumber": v:true }
+" Debugging
+nnoremap <F4> :lua require('dapui').toggle()<CR>
+nnoremap <F5> :lua require('dap').toggle_breakpoint()<CR>
+nnoremap <F9> :lua require('dap').continue()<CR>
 
-let g:netrw_bufsettings = 'noma nomod nonu nobl nowrap ro nornu relativenumber number'
+nnoremap <F1> :lua require('dap').step_over()<CR>
+nnoremap <F2> :lua require('dap').step_into()<CR>
+nnoremap <F3> :lua require('dap').step_out()<CR>
+
+nnoremap <Leader>dsc :lua require('dap').continue()<CR>
+nnoremap <Leader>dsv :lua require('dap').step_over()<CR>
+nnoremap <Leader>dsi :lua require('dap').step_into()<CR>
+nnoremap <Leader>dso :lua require('dap').step_out()<CR>
+
+nnoremap <Leader>dhh :lua require('dap.ui.variables').hover()<CR>
+nnoremap <Leader>dhv :lua require('dap.ui.variables').visual_hover()<CR>
+
+nnoremap <Leader>duh :lua require('dap.ui.widgets').hover()<CR>
+nnoremap <Leader>duf :lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.scopes)<CR>
+
+nnoremap <Leader>dro :lua require('dap').repl.open()<CR>
+nnoremap <Leader>drl :lua require('dap').repl.run_last()<CR>
+
+nnoremap <Leader>dbc :lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+nnoremap <Leader>dbm :lua require('dap').set_breakpoint({ nil, nil, vim.fn.input('Log point message: ') })<CR>
+nnoremap <Leader>dbt :lua require('dap').toggle_breakpoint()<CR>
+
+nnoremap <Leader>dc :lua require('dap.ui.variables').scopes()<CR>
+nnoremap <Leader>di :lua require('dapui').toggle()<CR>
 
 let g:airline_powerline_fonts = 1
 
-" Nvim Tree
-let g:nvim_tree_width = 50
-let g:nvim_tree_quit_on_open = 1
-let g:nvim_tree_indent_markers = 1
-let g:nvim_tree_group_empty = 1
-
-" Make work like vinegar
-nnoremap - :NvimTreeToggle<CR>
-
 lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true
-  },
-}
-require("bufferline").setup{
-  options = {
-    diagnostics = "nvim_lsp",
-    offsets = {{filetype = "NvimTree", text = "", text_align = "left"}},
-  },
-}
-require'colorizer'.setup()
-require'nvim-tree'.setup {
-  disable_netrw = 0,
-  hijack_netrw = 1,
-  follow = 1,
-  diagnostics = {
-  enable = true
-  },
-  update_focused_file = {
-    enable = true
-  },
-  filters = {
-    custom = {'.git', 'node_modules', '.cache', '.temp', '.DS_Store'}
-  }
-}
-require("indent_blankline").setup {
-    space_char_blankline = " ",
-    show_current_context = true,
-    show_current_context_start = true,
-    use_treesitter = true
-}
-EOF
 
-luafile ~/.config/nvim/lua/eviline.lua
+require'colorizer'.setup()
+require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
+require('dap.ext.vscode').load_launchjs()
+require("dapui").setup()
+require("fidget").setup()
+
+-- vim.lsp.set_log_level("debug") -- LSP debugging mode
+EOF
 
 luafile ~/.config/nvim/telescope.lua
 

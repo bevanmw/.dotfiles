@@ -64,17 +64,17 @@ local on_attach = function(client, bufnr)
     vim.cmd("command! LspRefs lua vim.lsp.buf.references()")
     vim.cmd("command! LspTypeDef lua vim.lsp.buf.type_definition()")
     vim.cmd("command! LspImplementation lua vim.lsp.buf.implementation()")
-    vim.cmd("command! LspDiagPrev lua vim.lsp.diagnostic.goto_prev()")
-    vim.cmd("command! LspDiagNext lua vim.lsp.diagnostic.goto_next()")
+    vim.cmd("command! LspDiagPrev lua vim.diagnostic.goto_prev()")
+    vim.cmd("command! LspDiagNext lua vim.diagnostic.goto_next()")
     vim.cmd(
         "command! LspDiagLine lua vim.lsp.diagnostic.show_line_diagnostics()")
     vim.cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
 
     buf_map(bufnr, "n", "gd", ":LspDef<CR>", {silent = true})
-    buf_map(bufnr, "n", "gr", ":LspRename<CR>", {silent = true})
-    buf_map(bufnr, "n", "gR", ":LspRefs<CR>", {silent = true})
+    buf_map(bufnr, "n", "<Leader>r", ":LspRename<CR>", {silent = true})
+    buf_map(bufnr, "n", "gr", ":LspRefs<CR>", {silent = true})
     buf_map(bufnr, "n", "gy", ":LspTypeDef<CR>", {silent = true})
-    buf_map(bufnr, "n", "K", ":Lspsaga hover_doc<CR>", {silent = true})
+    buf_map(bufnr, "n", "K", ":LspHover<CR>", {silent = true})
     buf_map(bufnr, "i", "<C-k>", "<Cmd>Lspsaga signature_help<CR>", {silent = true})
     buf_map(bufnr, "n", "<C-j>", ":Lspsaga show_line_diagnostics<CR>", {silent = true})
     buf_map(bufnr, "n", "gh", ":Lspsaga lsp_finder<CR>", {silent = true})
@@ -124,11 +124,55 @@ local on_attach = function(client, bufnr)
     }
 end
 
+
+nvim_lsp.gopls.setup {
+    cmd = { 'gopls', '--remote=auto'},
+}
+
 nvim_lsp.tsserver.setup {
-    on_attach = function(client)
+    on_attach = function(client, bufnr)
         client.resolved_capabilities.document_formatting = false
         on_attach(client)
+
+         local ts_utils = require("nvim-lsp-ts-utils")
+
+        -- defaults
+        ts_utils.setup({})
+
+        ts_utils.setup_client(client)
+
+        local opts = { silent = true }
+        vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", opts)
+        vim.api.nvim_buf_set_keymap(bufnr, "n", "gR", ":TSLspRenameFile<CR>", opts)
     end
+}
+
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
+nvim_lsp.sumneko_lua.setup {
+  settings = {
+    Lua = {
+      runtime = {
+        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+        version = 'LuaJIT',
+        -- Setup your lua path
+        path = runtime_path,
+      },
+      diagnostics = {
+        -- Get the language server to recognize the `vim` global
+        globals = {'vim'},
+      },
+      workspace = {
+        -- Make the server aware of Neovim runtime files
+        library = vim.api.nvim_get_runtime_file("", true),
+      },
+      -- Do not send telemetry data containing a randomized but unique identifier
+      telemetry = {
+        enable = false,
+      },
+    },
+  }
 }
 
 nvim_lsp.pyright.setup {
@@ -184,7 +228,7 @@ local formatters = {
       command = "eslint_d",
       args = { "--stdin", "--fix-to-stdout", "--stdin-filename", "%filepath" },
     },
-    black = { command = 'black --quiet -' }
+    -- black = { command = 'black --quiet -' }
 }
 
 local formatFiletypes = {
@@ -219,6 +263,7 @@ require"compe".setup {
         path = true,
         buffer = true,
         vsnip = true,
+        spell = true,
         nvim_lsp = true,
         nvim_lua = true
     }
@@ -248,4 +293,4 @@ vim.api.nvim_set_keymap("i", "<CR>", [[compe#confirm("<CR>")]],
 vim.api.nvim_set_keymap("i", "<C-e>", [[compe#close("<C-e>")]],
                         {expr = true, silent = true})
 
-vim.lsp.set_log_level("debug")
+-- vim.lsp.set_log_level("debug")
