@@ -4,7 +4,7 @@
 -- Bottom status line
 --
 
-vim.cmd("Plug 'NTBBloodbath/galaxyline.nvim' , {'branch': 'main'}")
+vim.cmd("Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}")
 
 vim.api.nvim_exec([[
   autocmd User PlugLoaded lua require("plugins.galaxyline-nvim").setup()
@@ -14,7 +14,7 @@ local module = {}
 
 function module.setup()
 local gl = require("galaxyline")
-local colors = require("galaxyline.themes.colors")["doom-one"]
+local colors = require("galaxyline.theme")["default"]
 local condition = require("galaxyline.condition")
 local gls = gl.section
 gl.short_line_list = { "NvimTree", "vista", "dbui", "packer" }
@@ -41,7 +41,6 @@ gls.left[2] = {
         no = colors.red,
         s = colors.orange,
         S = colors.orange,
-        [""] = colors.orange,
         ic = colors.yellow,
         R = colors.violet,
         Rv = colors.violet,
@@ -70,9 +69,9 @@ gls.left[4] = {
   FileIcon = {
     provider = "FileIcon",
     condition = condition.buffer_not_empty,
-    highlight = { require("galaxyline.providers.fileinfo").get_file_icon_color, colors.bg },
+    highlight = { require("galaxyline.provider_fileinfo").get_file_icon_color, colors.bg },
   },
-} 
+}
 
 gls.left[5] = {
   FileName = {
@@ -134,20 +133,6 @@ gls.left[11] = {
     highlight = { colors.blue, colors.bg },
   },
 }
--- gls.mid[1] = {
---   ShowLspClient = {
---     provider = "GetLspClient",
---     condition = function()
---       local tbl = { ["dashboard"] = true, [""] = true }
---       if tbl[vim.bo.filetype] then
---         return false
---       end
---       return true
---     end,
---     icon = "? LSP:",
---     highlight = { colors.cyan, colors.bg, "bold" },
---   },
--- }
 
 gls.right[1] = {
   FileEncode = {

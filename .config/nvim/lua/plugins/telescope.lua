@@ -19,3 +19,21 @@ vim.api.nvim_set_keymap("n", "<Leader>fd", "<CMD>Telescope lsp_definitions<CR>",
 vim.api.nvim_set_keymap("n", "<Leader>fe", "<CMD>Telescope lsp_workspace_diagnostics<CR>", config)
 vim.api.nvim_set_keymap("n", "<Leader>fgl", "<CMD>Telescope git_files<CR>", config)
 vim.api.nvim_set_keymap("n", "<Leader>fgb", "<CMD>Telescope git_branches<CR>", config)
+
+
+vim.api.nvim_exec([[
+  autocmd User PlugLoaded lua require("plugins.telescope").setup()
+]], false)
+
+
+local module = {}
+
+function module.setup()
+  require('telescope').setup{
+    defaults = {
+      winblend = 30
+    }
+  }
+end
+
+return module

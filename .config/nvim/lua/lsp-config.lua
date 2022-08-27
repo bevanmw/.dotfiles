@@ -1,14 +1,27 @@
+function dump(o)
+   if type(o) == 'table' then
+      local s = '{ '
+      for k,v in pairs(o) do
+         if type(k) ~= 'number' then k = '"'..k..'"' end
+         s = s .. '['..k..'] = ' .. dump(v) .. ','
+      end
+      return s .. '} '
+   else
+      return tostring(o)
+   end
+end
+
 local nvim_lsp = require("lspconfig")
 local protocol = require('vim.lsp.protocol')
-local saga = require('lspsaga')
+-- local saga = require('lspsaga')
 
-saga.init_lsp_saga {
-  error_sign = '',
-  warn_sign = '',
-  hint_sign = '',
-  infor_sign = '',
-  border_style = "round",
-}
+-- saga.init_lsp_saga {
+--   error_sign = '',
+--   warn_sign = '',
+--   hint_sign = '',
+--   infor_sign = '',
+--   border_style = "round",
+-- }
 
 vim.api.nvim_command('hi LspDiagnosticsVirtualTextError guifg=Red ctermfg=Red')
 vim.api.nvim_command('hi LspDiagnosticsVirtualTextWarning guifg=Yellow ctermfg=Yellow')
@@ -56,7 +69,7 @@ end
 local on_attach = function(client, bufnr)
     local buf_map = vim.api.nvim_buf_set_keymap
     vim.cmd("command! LspDef lua vim.lsp.buf.definition()")
-    vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting_sync(nil, 8000)")
+    vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting_seq_sync()")
     vim.cmd("command! LspCodeAction lua vim.lsp.buf.code_action()")
     vim.cmd("command! LspHover lua vim.lsp.buf.hover()")
     vim.cmd("command! LspRename lua vim.lsp.buf.rename()")
@@ -86,11 +99,11 @@ local on_attach = function(client, bufnr)
     buf_map(bufnr, "n", "<Leader>f", ":LspFormatting<CR>", {silent = true})
     buf_map(bufnr, "i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", {silent = true})
 
-    if client.resolved_capabilities.document_formatting then
+    if client.server_capabilities.documentFormattingProvider then
         vim.api.nvim_exec([[
          augroup LspAutocommands
              autocmd! * <buffer>
-             autocmd BufWritePost <buffer> LspFormatting
+             autocmd BufWritePre <buffer> LspFormatting
          augroup END
          ]], true)
     end
@@ -131,8 +144,8 @@ nvim_lsp.gopls.setup {
 
 nvim_lsp.tsserver.setup {
     on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        on_attach(client)
+        client.server_capabilities.document_formatting = false
+        on_attach(client, bufnr)
 
          local ts_utils = require("nvim-lsp-ts-utils")
 

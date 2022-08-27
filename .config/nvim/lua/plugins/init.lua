@@ -34,44 +34,39 @@ vim.call('plug#begin')
 
   require 'plugins.vim-rooter'
 
-  vim.cmd("Plug 'kyazdani42/nvim-web-devicons'")     -- Icons
+  require 'plugins.nvim-web-devicons'
 
-  vim.cmd("Plug 'unblevable/quick-scope'")           -- Highlight chars when using f or t
+  require 'plugins.quick-scope'
 
-  vim.cmd("Plug 'neovim/nvim-lspconfig'")            -- Nvim LSP config
+  require 'plugins.nvim-lspconfig'
 
-  vim.cmd("Plug 'hrsh7th/nvim-compe'")               -- Nvim LSP auto completion
+  require 'plugins.nvim-compe'
 
-  vim.cmd("Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'") -- Typescript utils for LSP
+  require 'plugins.nvim-lsp-ts-utils'
 
-  vim.cmd("Plug 'hrsh7th/vim-vsnip'")                -- Snippets
+  require 'plugins.vim-vsnip'
 
-  vim.cmd("Plug 'mhartington/oceanic-next'")         -- Color scheme
+  require 'plugins.nvim-colorizer'
 
-  vim.cmd("Plug 'norcalli/nvim-colorizer.lua'")      -- Highlight colors in code
+  require 'plugins.nightfox'
 
-  vim.cmd("Plug 'cedarbaum/fugitive-azure-devops.vim'")
+  require 'plugins.nvim-dap'
 
-  vim.cmd("Plug 'ruanyl/vim-sort-imports'")          -- Sort imports
+  require 'plugins.nvim-dap-python'
 
-  vim.cmd("Plug 'glepnir/lspsaga.nvim'")             -- Better LSP UI
+  require 'plugins.nvim-dap-ui'
 
-  vim.cmd("Plug 'EdenEast/nightfox.nvim'")           -- Color scheme
+  require 'plugins.fidget'
 
-  vim.cmd("Plug 'mfussenegger/nvim-dap'")            -- Debugging
+  require 'plugins.markdown-preview'
 
-  vim.cmd("Plug 'mfussenegger/nvim-dap-python'")
+  require 'plugins.vimwiki'
 
-  vim.cmd("Plug 'rcarriga/nvim-dap-ui'")
+  require 'plugins.telescope-vimwiki'
 
-  vim.cmd("Plug 'j-hui/fidget.nvim'")
-
-  vim.cmd("Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }")
-
-  vim.cmd("Plug 'vimwiki/vimwiki'")
-
-  vim.cmd("Plug 'ElPiloto/telescope-vimwiki.nvim'")
+  require 'plugins.mdx'
 
 vim.call('plug#end')
 
+-- Calls functions after all plugins have loaded
 vim.api.nvim_command('doautocmd User PlugLoaded')
