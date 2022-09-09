@@ -1,16 +1,3 @@
-function dump(o)
-   if type(o) == 'table' then
-      local s = '{ '
-      for k,v in pairs(o) do
-         if type(k) ~= 'number' then k = '"'..k..'"' end
-         s = s .. '['..k..'] = ' .. dump(v) .. ','
-      end
-      return s .. '} '
-   else
-      return tostring(o)
-   end
-end
-
 local nvim_lsp = require("lspconfig")
 local protocol = require('vim.lsp.protocol')
 -- local saga = require('lspsaga')
@@ -145,6 +132,10 @@ nvim_lsp.gopls.setup {
 nvim_lsp.tsserver.setup {
     on_attach = function(client, bufnr)
         client.server_capabilities.document_formatting = false
+
+        local navic = require("nvim-navic")
+        navic.attach(client, bufnr)
+
         on_attach(client, bufnr)
 
          local ts_utils = require("nvim-lsp-ts-utils")
@@ -189,8 +180,10 @@ nvim_lsp.sumneko_lua.setup {
 }
 
 nvim_lsp.pyright.setup {
-    on_attach = function(client)
-        on_attach(client)
+    on_attach = function(client, bufnr)
+      local navic = require("nvim-navic")
+      navic.attach(client, bufnr)
+      on_attach(client, bufnr)
     end,
     settings = {
       python = {
@@ -270,40 +263,8 @@ vim.g.vsnip_filetypes = {
     typescriptreact = {"typescript"}
 }
 
-require"compe".setup {
-    preselect = "always",
-    source = {
-        path = true,
-        buffer = true,
-        vsnip = true,
-        spell = true,
-        nvim_lsp = true,
-        nvim_lua = true
-    }
-}
-
 local t = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
-
-_G.tab_complete = function()
-    if vim.fn.pumvisible() == 1 then
-        return vim.fn["compe#confirm"]()
-    elseif vim.fn.call("vsnip#available", {1}) == 1 then
-        return t("<Plug>(vsnip-expand-or-jump)")
-    else
-        return t("<Tab>")
-    end
-end
-
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-
-vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()",
-                        {expr = true, silent = true})
-vim.api.nvim_set_keymap("i", "<CR>", [[compe#confirm("<CR>")]],
-                        {expr = true, silent = true})
-vim.api.nvim_set_keymap("i", "<C-e>", [[compe#close("<C-e>")]],
-                        {expr = true, silent = true})
 
 -- vim.lsp.set_log_level("debug")

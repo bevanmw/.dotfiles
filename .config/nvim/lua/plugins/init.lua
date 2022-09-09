@@ -40,7 +40,7 @@ vim.call('plug#begin')
 
   require 'plugins.nvim-lspconfig'
 
-  require 'plugins.nvim-compe'
+  require 'plugins.nvim-cmp'
 
   require 'plugins.nvim-lsp-ts-utils'
 
@@ -65,6 +65,14 @@ vim.call('plug#begin')
   require 'plugins.telescope-vimwiki'
 
   require 'plugins.mdx'
+
+  require 'plugins.nvim-autopairs'
+
+  require 'plugins.nvim-ts-autotag'
+
+  require 'plugins.nvim-navic'
+
+  require 'plugins.nvim-winbar'
 
 vim.call('plug#end')
 

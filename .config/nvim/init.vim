@@ -1,15 +1,3 @@
-let g:startify_custom_header = [
-      \ '                            __        ',
-      \ '                           _| |_      ',
-      \ '                           (_"\      ',
-      \ '                             | |      ',
-      \ '                             | |      ',
-      \ '                  __.----.__/  /      ',
-      \ '    /‾‾\        /             /       ',
-      \ '    V‾\ \____ / (   |   (  |/         ',
-      \ '       \________,|_|"‾‾‾"|_|          ',
-      \ '‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾']
-
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
 
@@ -30,9 +18,10 @@ set scrolloff=10
 set nowrap
 " Allow hiding of buffers
 set hidden
-
 " Show max line lenght indicator
 set colorcolumn=88 " Black python uses this
+" Terminal title
+set title
 
 set nocompatible
 filetype plugin on
@@ -74,16 +63,14 @@ set re=0
 
 autocmd StdinReadPre * let s:std_in=1
 
-let g:presence_editing_text      = "Editing file"
-let g:presence_workspace_text    = "Working on nvim"
-
 autocmd FileType markdown setlocal spell
 
 autocmd BufEnter *.png,*.jpg,*gif exec "! imgcat ".expand("%") | :bw
-"
-" Disable quote concealing in JSON files
-let g:vim_json_conceal=0
-let g:indentLine_setConceal = 0
+
+augroup env_ft
+  au!
+  autocmd BufEnter *.env.* set syntax=sh " Handle .env.* files as .env files
+augroup END
 
 autocmd VimEnter *
             \   if !argc()
@@ -98,10 +85,6 @@ autocmd VimEnter *
 
 lua require("plugins.init")
 
-colorscheme nightfox
-
-
-let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 " Buffers
 nnoremap <leader>vb :vertical sb<space>
@@ -120,6 +103,9 @@ nnoremap <silent>[b :BufferLineCyclePrev<CR>
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
+" Go to definition at center
+nnoremap gd gdzz
+
 " Enter terminal mode automatically
 augroup term_open
   autocmd!
@@ -128,54 +114,6 @@ augroup END
 
 " Exit terminal insert mode with escape
 tnoremap <Esc> <C-\><C-n>
-
-" Map jk to exit insert mode:
-" :imap jk <Esc>
-
-" Debugging
-nnoremap <F4> :lua require('dapui').toggle()<CR>
-nnoremap <F5> :lua require('dap').toggle_breakpoint()<CR>
-nnoremap <F9> :lua require('dap').continue()<CR>
-
-nnoremap <F1> :lua require('dap').step_over()<CR>
-nnoremap <F2> :lua require('dap').step_into()<CR>
-nnoremap <F3> :lua require('dap').step_out()<CR>
-
-nnoremap <Leader>dsc :lua require('dap').continue()<CR>
-nnoremap <Leader>dsv :lua require('dap').step_over()<CR>
-nnoremap <Leader>dsi :lua require('dap').step_into()<CR>
-nnoremap <Leader>dso :lua require('dap').step_out()<CR>
-
-nnoremap <Leader>dhh :lua require('dap.ui.variables').hover()<CR>
-nnoremap <Leader>dhv :lua require('dap.ui.variables').visual_hover()<CR>
-
-nnoremap <Leader>duh :lua require('dap.ui.widgets').hover()<CR>
-nnoremap <Leader>duf :lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.scopes)<CR>
-
-nnoremap <Leader>dro :lua require('dap').repl.open()<CR>
-nnoremap <Leader>drl :lua require('dap').repl.run_last()<CR>
-
-nnoremap <Leader>dbc :lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
-nnoremap <Leader>dbm :lua require('dap').set_breakpoint({ nil, nil, vim.fn.input('Log point message: ') })<CR>
-nnoremap <Leader>dbt :lua require('dap').toggle_breakpoint()<CR>
-
-nnoremap <Leader>dc :lua require('dap.ui.variables').scopes()<CR>
-nnoremap <Leader>di :lua require('dapui').toggle()<CR>
-
-let g:airline_powerline_fonts = 1
-
-lua <<EOF
-
-require'colorizer'.setup()
-require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
-require('dap.ext.vscode').load_launchjs()
-require("dapui").setup()
-require("fidget").setup()
-
--- vim.lsp.set_log_level("debug") -- LSP debugging mode
-EOF
-
-luafile ~/.config/nvim/telescope.lua
 
 lua require("lsp-config")
 
