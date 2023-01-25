@@ -20,8 +20,6 @@ vim.call('plug#begin')
 
   require 'plugins.telescope'
 
-  require 'plugins.nvim-treesitter'
-
   require 'plugins.indent-blankline'
 
   require 'plugins.vim-commentary'
@@ -48,7 +46,7 @@ vim.call('plug#begin')
 
   require 'plugins.nvim-colorizer'
 
-  require 'plugins.nightfox'
+  require 'plugins.rose-pine'
 
   require 'plugins.nvim-dap'
 
@@ -66,15 +64,22 @@ vim.call('plug#begin')
 
   require 'plugins.mdx'
 
-  require 'plugins.nvim-autopairs'
-
-  require 'plugins.nvim-ts-autotag'
-
   require 'plugins.nvim-navic'
 
   require 'plugins.nvim-winbar'
+
+  require 'plugins.image'
+
+  require 'plugins.template'
+
+  require 'plugins.ts-commentstring'
+
+  require 'plugins.nvim-ts-autotag'
+
+  require 'plugins.nvim-treesitter'
 
 vim.call('plug#end')
 
 -- Calls functions after all plugins have loaded
 vim.api.nvim_command('doautocmd User PlugLoaded')
+

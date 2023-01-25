@@ -12,13 +12,19 @@ vim.api.nvim_exec([[
 
 local module = {}
 function module.setup ()
-require'nvim-treesitter.configs'.setup {
+require('nvim-treesitter.configs').setup {
   highlight = {
-    enable = true
+    enable = false
   },
   autotag = {
     enable = true
-  }
+  },
+  indent = {
+    enable = true
+  },
+  context_commentstring = {
+    enable = true
+  },
 }
 end
 

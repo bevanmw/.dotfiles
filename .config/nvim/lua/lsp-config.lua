@@ -28,6 +28,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
  }
 )
 
+vim.lsp.diagnostic.error_sign = '⨷'
+vim.lsp.diagnostic.warn_sign = '⚠'
+
 -- vim.api.nvim_command("autocmd CursorHold * "..vim.lsp.diagnostic.show_line_diagnostics())
 
 local format_async = function(err, _, result, _, bufnr)
@@ -66,8 +69,7 @@ local on_attach = function(client, bufnr)
     vim.cmd("command! LspImplementation lua vim.lsp.buf.implementation()")
     vim.cmd("command! LspDiagPrev lua vim.diagnostic.goto_prev()")
     vim.cmd("command! LspDiagNext lua vim.diagnostic.goto_next()")
-    vim.cmd(
-        "command! LspDiagLine lua vim.lsp.diagnostic.show_line_diagnostics()")
+    vim.cmd("command! LspFloat lua vim.diagnostic.open_float()")
     vim.cmd("command! LspSignatureHelp lua vim.lsp.buf.signature_help()")
 
     buf_map(bufnr, "n", "gd", ":LspDef<CR>", {silent = true})
@@ -76,7 +78,7 @@ local on_attach = function(client, bufnr)
     buf_map(bufnr, "n", "gy", ":LspTypeDef<CR>", {silent = true})
     buf_map(bufnr, "n", "K", ":LspHover<CR>", {silent = true})
     buf_map(bufnr, "i", "<C-k>", "<Cmd>Lspsaga signature_help<CR>", {silent = true})
-    buf_map(bufnr, "n", "<C-j>", ":Lspsaga show_line_diagnostics<CR>", {silent = true})
+    buf_map(bufnr, "n", "<C-j>", ":LspFloat<CR>", {silent = true})
     buf_map(bufnr, "n", "gh", ":Lspsaga lsp_finder<CR>", {silent = true})
     buf_map(bufnr, "n", "gs", ":LspOrganize<CR>", {silent = true})
     buf_map(bufnr, "n", "[d", ":LspDiagPrev<CR>", {silent = true})
@@ -224,6 +226,8 @@ local linters = {
         securities = {[2] = "error", [1] = "warning"}
     }
 }
+
+nvim_lsp.tailwindcss.setup{}
 
 local formatters = {
     prettier = {

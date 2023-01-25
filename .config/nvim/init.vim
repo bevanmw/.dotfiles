@@ -65,8 +65,6 @@ autocmd StdinReadPre * let s:std_in=1
 
 autocmd FileType markdown setlocal spell
 
-autocmd BufEnter *.png,*.jpg,*gif exec "! imgcat ".expand("%") | :bw
-
 augroup env_ft
   au!
   autocmd BufEnter *.env.* set syntax=sh " Handle .env.* files as .env files
@@ -106,6 +104,12 @@ vnoremap K :m '<-2<CR>gv=gv
 " Go to definition at center
 nnoremap gd gdzz
 
+" Allow upper case save
+:command WQ wq
+:command Wq wq
+:command W w
+:command Q q
+
 " Enter terminal mode automatically
 augroup term_open
   autocmd!
@@ -116,4 +120,10 @@ augroup END
 tnoremap <Esc> <C-\><C-n>
 
 lua require("lsp-config")
+
+" Don't replace register when pasting
+xnoremap <leader>p "_dP
+" Keep current line in center of screen
+nnoremap <C-u> <C-u>zz
+nnoremap <C-d> <C-d>zz
 

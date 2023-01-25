@@ -12,6 +12,21 @@ vim.api.nvim_exec([[
 
 local module = {}
 
+local function telescope_dir(node)
+  local path = ""
+  if (node.type == 'file') then
+    path = node.parent.absolute_path
+  else
+    path = node.absolute_path
+  end
+
+  require('nvim-tree').toggle()
+  require('telescope.builtin').live_grep({
+    search_dirs = { path },
+    prompt_title = string.format('Grep in [%s]', vim.fs.basename(path)),
+  })
+end
+
 function module.setup()
 require'nvim-tree'.setup {
   diagnostics = {
@@ -36,7 +51,12 @@ require'nvim-tree'.setup {
     custom = {'.git', 'node_modules', '.cache', '.temp', '.DS_Store'}
   },
   view = {
-    width = 50
+    mappings = {
+      custom_only = false,
+      list = {
+        { key = "p", action = "telescope_in_dir", action_cb = telescope_dir },
+      },
+    },
   }
 }
 end
